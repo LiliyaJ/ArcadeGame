@@ -1,3 +1,48 @@
 body {
     text-align: center;
+    font-family: 'Open Sans', sans-serif;
+}
+
+h1{
+    font-weight: 300;
+}
+
+
+.lose-pop-up{
+    display: none;
+    grid-template-rows: repeat(5, 1fr);  
+    width: 300px;
+    height: 200px;
+    justify-content: center;
+    text-align: center;
+    position: fixed;
+    z-index: 1;
+    left: 20%;
+    top: 30%;
+    overflow: auto;
+    background-color: rgb(255, 255, 255);
+    padding: 60px;
+    border-radius: 15px;
+}
+
+.lose-pop-up .cong{
+   font-size: 30px;
+   font-weight: 900;
+}
+
+.lose-pop-up .btn{
+   margin: 0 30px 0 30px;
+   color: #ffffff;
+   background-color: darkgreen;
+   font-size: 18px;
+   font-weight: 600;
+   padding: 10px;
+   margin-top: 20px;
+}
+.lose-pop-up .btn:hover{
+   cursor: pointer;
+}
+.lose-pop-up span{
+    font-size: 15px;
+    margin-top: 10px;
 }

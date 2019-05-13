@@ -6,8 +6,21 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+    <h1>Arcade Game</h1>
+    <p>You have<span class="points"> 3</span> lives left</p>
     <script src="js/resources.js"></script>
     <script src="js/app.js"></script>
     <script src="js/engine.js"></script>
+
+    <div class="lose-pop-up">
+        <p class="cong">Game Over!</p>
+        <p>Oooops! You have no lives left.</p>
+        <button class="btn">Start over?</button>
+    </div>
+
+    <div class="win-pop-up">
+        <p>Wow! You won!</p>
+        <p> You get +1 life</p>
+    </div>
 </body>
 </html>
