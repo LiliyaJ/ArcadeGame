@@ -200,6 +200,10 @@ function loseScorePoints(){
     
     //one can start a new game
     restartButton.addEventListener('click', function(btn){
+        const selectPlayerPopup = document.querySelector('.select-player');
+        selectPlayerPopup.style.display = 'block'; 
+        selectPlayer();
+        
         //player is on start position
         resetPlayer();
 
