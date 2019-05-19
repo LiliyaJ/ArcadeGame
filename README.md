@@ -1,19 +1,19 @@
 # Classic Arcade Game Clone Project
 
 ## Table of Contents
-
+- [About the Game](#About the Game)
 - [Instructions](#instructions)
 - [Contributing](#contributing)
 
+##About the Game
+This is an arcade game. There is a player, three enemies and some gems, collecting those brings points. The goal of the player is to reach water, which is placed behind the stone area where enemies are constantly moving with different speed and randomly changing rows.
+
 ## Instructions
 
-Use this [rubric](https://review.udacity.com/#!/rubrics/15/view) for self-checking your submission.
+Before the game starts one has an opportunity to select an avatar for the game. From the beginning the player has three lives. Move can be done by pressing right, left, up or down button on a keyboard. The player can collect gems and a key on the way to water, he doesn't have to. If he gets a gem or the key he gets points - one for each. If on the way to water collision with an enemy bug happens the player loses one life and is placed on the start position. If the player has still more than 0 lives he doesn't lose points. If he reaches water without collision he gets another life and is placed on the start position. If the player loses all lives the game is over, all points are lost. The player sees a game over pop-up with a button 'Play again'. By clicking it the player can select a new player and start a new game.
 
-Make sure the functions you write are **object-oriented** - either class functions (like `Player` and `Enemy`) or class prototype functions such as `Enemy.prototype.checkCollisions`. Also make sure that the keyword `this` is used appropriately within your class and class prototype functions to refer to the object the function is called upon.
 
-Your **README.md** file should be updated with instructions on both how to 1. Run and 2. Play your arcade game.
-
-For detailed instructions on how to get started, check out this [guide](https://docs.google.com/document/d/1v01aScPjSWCCWQLIpFqvg3-vXLH2e8_SZQKC8jNO0Dc/pub?embedded=true).
+One doesn't need to do any extra preparations to run the game - just load the index.html file in a browser. 
 
 ## Contributing
 
