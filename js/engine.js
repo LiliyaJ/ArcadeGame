@@ -154,6 +154,9 @@ var Engine = (function(global) {
         });
 
         player.render();
+        greenGem.render();
+        orangeGem.render();
+        key.render();
     }
 
     /* This function does nothing but it could have been a good place to
@@ -174,7 +177,14 @@ var Engine = (function(global) {
         'images/grass-block.png',
         'images/enemy-bug.png',
         'images/char-boy.png',
-        'images/Gem Green.png'
+        'images/char-cat-girl.png',
+        'images/char-horn-girl.png',
+        'images/char-princess-girl.png',
+        'images/char-pink-girl.png',
+        'images/Gem Green.png',
+        'images/Gem Orange.png',
+        'images/Key.png'
+        
     ]);
     Resources.onReady(init);
 

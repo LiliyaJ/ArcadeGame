@@ -4,9 +4,27 @@ body {
 }
 
 h1{
-    font-weight: 300;
+    font-weight: 600;
+    font-size: 20px;
 }
 
+.gems{
+    display: grid;
+    grid-template-columns: repeat(6, 60px);
+    width: 100%;
+    justify-content: center;
+}
+
+.box-img img{
+    width: 30px;
+    height: auto;
+}
+.box-digit{
+    display: block;
+    text-align: center;
+    align-self: center;
+   margin-right: 20px;
+}
 
 .lose-pop-up{
     display: none;
@@ -45,4 +63,30 @@ h1{
 .lose-pop-up span{
     font-size: 15px;
     margin-top: 10px;
+}
+
+.select-player{
+    display: block;
+    width: 80%;
+    margin-left: 6%;
+    position: fixed;
+    z-index: 1;
+    top: 30%;
+    overflow: auto;
+    background-color: blanchedalmond;
+    padding: 30px;
+    border-radius: 15px;  
+    overflow: hidden; 
+    box-shadow: 3px 3px 5px rgb(138, 136, 136);
+    font-size: 20px;
+}
+
+.avatars{
+    display: block;
+    grid-template-columns: repeat(5, 1fr);
+    justify-items: center;
+}
+
+.avatar:hover{
+    transform: translateY(-10px);
 }
