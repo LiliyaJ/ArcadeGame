@@ -1,6 +1,7 @@
-
 /** xx 1, 102, 203, 304, 405 */
 /** yy 320 green, 237, 154, 71 */
+
+'use strict';
 
 const checkForCollision = enemy => {
     let collisionY = enemy.y === player.y;
@@ -9,7 +10,7 @@ const checkForCollision = enemy => {
         resetPlayer();
         loseScorePoints();
     }
-}
+};
 
 class Enemy{
     constructor(x, y, speed){
@@ -17,7 +18,8 @@ class Enemy{
         this.y = y;
         this.speed = speed;
         this.sprite = 'images/enemy-bug.png'
-    }
+    };
+
     update(dt){
 
         // Enemies are moving 
@@ -74,7 +76,7 @@ class GreenGem{
     constructor (x, y){
         this.x = x;
         this.y = y;
-        this.sprite = 'images/Gem Green.png'
+        this.sprite = 'images/Gem_Green.png';
     }
     update(dt){
 
@@ -88,7 +90,7 @@ class OrangeGem{
     constructor (x, y){
         this.x = x;
         this.y = y;
-        this.sprite = 'images/Gem Orange.png'
+        this.sprite = 'images/Gem_Orange.png';
     }
     update(dt){
 
@@ -102,7 +104,7 @@ class Key{
     constructor (x, y){
         this.x = x;
         this.y = y;
-        this.sprite = 'images/Key.png'
+        this.sprite = 'images/Key.png';
     }
     update(dt){
 
@@ -164,12 +166,12 @@ let score = 3;
 function getScorePoints(){
     //a winner gets a win sound
     const winBleep = new Audio();
-    winBleep.src = "js/audio/Winning-sound-effect.mp3"
+    winBleep.src = 'js/audio/Winning-sound-effect.mp3';
     winBleep.play();
 
     //a winner gets one more life
     score += 1;
-    const scorePoint = document.querySelector('.points')
+    const scorePoint = document.querySelector('.points');
     scorePoint.innerHTML = ' ' + score;  
 }
 
@@ -178,7 +180,7 @@ function loseScorePoints(){
 
     //a sound if one has a collision
     const failureSound = new Audio();
-    failureSound.src = "js/audio/fail-buzzer-02.mp3"
+    failureSound.src = 'js/audio/fail-buzzer-02.mp3';
     failureSound.play();
 
     //a loser loses one life
@@ -194,7 +196,7 @@ function loseScorePoints(){
     if (score <= 0){
         popup.style.display = 'block';
         const gameOverSound = new Audio();
-        gameOverSound.src = "js/audio/Sad_Trombone-Joe_Lamb-665429450.mp3"
+        gameOverSound.src = 'js/audio/Sad_Trombone-Joe_Lamb-665429450.mp3';
         gameOverSound.play();
     }
     
@@ -229,7 +231,7 @@ function loseScorePoints(){
 
 //let the user select a player only at the beginning, not after "play again"
 function selectPlayer(){
-    let avatars = document.querySelectorAll('.avatar')
+    let avatars = document.querySelectorAll('.avatar');
     avatars.forEach(function(avatar){
         avatar.addEventListener('click', function(){ 
            let avatarName = 'images/' + avatar.classList[1];

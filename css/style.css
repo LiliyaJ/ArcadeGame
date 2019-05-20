@@ -19,6 +19,7 @@ h1{
     width: 30px;
     height: auto;
 }
+
 .box-digit{
     display: block;
     text-align: center;
@@ -57,9 +58,11 @@ h1{
    padding: 10px;
    margin-top: 20px;
 }
+
 .lose-pop-up .btn:hover{
    cursor: pointer;
 }
+
 .lose-pop-up span{
     font-size: 15px;
     margin-top: 10px;

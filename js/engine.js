@@ -181,8 +181,8 @@ var Engine = (function(global) {
         'images/char-horn-girl.png',
         'images/char-princess-girl.png',
         'images/char-pink-girl.png',
-        'images/Gem Green.png',
-        'images/Gem Orange.png',
+        'images/Gem_Green.png',
+        'images/Gem_Orange.png',
         'images/Key.png'
         
     ]);
