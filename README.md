@@ -14,7 +14,7 @@ Before the game starts one has an opportunity to select an avatar for the game. 
 
 A losing life, getting life or a gem/key is provided with differnet sounds. A special sound let a user know that the game is over.
 
-One doesn't need to do any extra preparations to run the game - just load the index.html file in a browser. 
+One doesn't need to do any extra preparations to run the game - just [load the index.html file](index.html) in a browser. 
 
 ## Contributing
 
