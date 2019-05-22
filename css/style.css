@@ -30,16 +30,16 @@ h1{
 .lose-pop-up{
     display: none;
     grid-template-rows: repeat(5, 1fr);  
-    width: 300px;
+    width: 60%;
     height: 200px;
     justify-content: center;
     text-align: center;
     position: fixed;
     z-index: 1;
-    left: 20%;
+    left: 13%;
     top: 30%;
     overflow: auto;
-    background-color: rgb(255, 255, 255);
+    background-color: blanchedalmond;
     padding: 60px;
     border-radius: 15px;
 }

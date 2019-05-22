@@ -1,16 +1,27 @@
-/** xx 1, 102, 203, 304, 405 */
-/** yy 320 green, 237, 154, 71 */
-
 'use strict';
 
-const checkForCollision = enemy => {
-    let collisionY = enemy.y === player.y;
-    let collisionX = (enemy.x + 55 > player.x && enemy.x < player.x) || (enemy.x + 55 > player.x + 50 && enemy.x < player.x + 50);
-   if(collisionY && collisionX){
-        resetPlayer();
-        loseScorePoints();
-    }
-};
+//xx and yy
+const battleFieldArrayX = [1, 102, 203, 304, 405];
+const battleFieldArrayY = [71, 154, 237]; 
+
+//score counting ans sounds !!!ASK MATT about global variables
+let score = 3;
+const winBleep = new Audio();
+winBleep.src = 'js/audio/Winning-sound-effect.mp3';
+const failureSound = new Audio();
+failureSound.src = 'js/audio/fail-buzzer-02.mp3';
+const gameOverSound = new Audio();
+gameOverSound.src = 'js/audio/Sad_Trombone-Joe_Lamb-665429450.mp3';
+const gotGem = new Audio();
+gotGem.src = "js/audio/888.mp3";
+
+//for collecting gems
+let greenGemCounter = 0;
+const greenGemScore = document.querySelector('.greenGem');
+let orangeGemCounter = 0;
+const orangeGemScore = document.querySelector('.orangeGem');
+let keyCounter = 0;
+const keyScore = document.querySelector('.key');
 
 class Enemy{
     constructor(x, y, speed){
@@ -18,26 +29,30 @@ class Enemy{
         this.y = y;
         this.speed = speed;
         this.sprite = 'images/enemy-bug.png'
+
+        this.checkForCollision = function(){
+            let collisionY = this.y === player.y;
+            let collisionX = (this.x + 55 > player.x && this.x < player.x) || (this.x + 55 > player.x + 50 && this.x < player.x + 50);
+           if(collisionY && collisionX){
+                player.resetPlayer();
+                loseScorePoints();
+                placeGems();
+            }
+        }
     };
 
     update(dt){
-
+      
         // Enemies are moving 
-       if(this.x > 505){
+        if (this.x > 505){
             this.x = -101; 
-            if(this.y === 71){
-                this.y = 154;
-            }else if(this.y === 154){
-                this.y = 237;
-            }else if(this.y === 237){
-                this.y = 71;
-            }
+            this.y = battleFieldArrayY[Math.round(Math.random() * 2)];
         }else{
             this.x = this.x + this.speed;
         }
-
+        
         // Collision for every enemy 
-        checkForCollision(this); 
+       this.checkForCollision(); 
     }
     render(){
         ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
@@ -45,72 +60,143 @@ class Enemy{
 }
 
 class Player{
+    constructor(){
+        this.x = 203;
+        this.y = 403;
+        this.sprite = 'images/char-boy.png';
+
+        this.resetPlayer = function(){
+            this.x = 203;
+            this.y = 403;
+        }
+
+        this.won = function(){
+            return (player.y < 0);           
+        }
+        
+        this.afterWin = function(){
+            this.resetPlayer();
+            getScorePoints();
+            placeGems();    
+        }
+    }
+
+    update(dt){    
+    }
+
+    render(){
+        ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    }
+
+    handleInput(e){
+        // Player moves on the board and stays in the feild
+        if(e==='left'){
+            this.x -= 101;
+
+            //if the end of the field player cannot go further to the left
+            if(this.x < 1){
+                this.x = 1;
+                }     
+        }else if(e==='right'){
+            this.x += 101;
+
+             //if the end of the field player cannot go further to the right
+            if(this.x > 405){
+                this.x = 405;
+                }
+        }else if(e==='up'){
+            this.y -= 83;
+
+            //if a player reaches water he won, got a score and is on his start position
+            if(this.won()){
+                this.afterWin();
+                } 
+        }else if(e==='down'){
+            this.y += 83;
+
+             //if the end of the field player cannot go further down
+            if(this.y > 403){
+                this.y = 403;
+                }
+        }
+        greenGem.isCollected();
+        orangeGem.isCollected();
+        key.isCollected();
+    }
+}
+
+class Gem{
     constructor(x, y){
         this.x = x;
         this.y = y;
-        this.sprite = 'images/char-boy.png';
-    }
-    update(dt){
-        playerStaysInField();
-        playerAfterWin();
-        collectGems();
-    }
-    render(){
-        ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-    }
-    handleInput(e){
-        // Player moves on the board
-        if(e==='left'){
-            this.x -= 101;  
-        }else if(e==='right'){
-            this.x += 101;
-        }else if(e==='up'){
-            this.y -= 83; 
-        }else if(e==='down'){
-            this.y += 83;
+    
+        this.removeFromField = function(){
+            this.y = -999;
+        }
+
+        //what happens if a gem is collected
+        this.isCollected = function(){
+            if (player.x === this.x && player.y === this.y){
+                this.removeFromField();
+                gotGem.play();
+
+                if(this === greenGem){
+                    greenGemCounter += 1;
+                    greenGemScore.innerHTML = greenGemCounter;
+                }else if(this === orangeGem){
+                    orangeGemCounter += 1;
+                    orangeGemScore.innerHTML = orangeGemCounter;
+                }else if(this === key){
+                    keyCounter += 1;
+                    keyScore.innerHTML = keyCounter;
+                }
+            }
+        }
+       
+        //place gems on field in a free from gems random cell
+        this.placeOnField = function(){
+            let newX = battleFieldArrayX[Math.round(Math.random() * 4)];
+            if (greenGem.x !== newX && orangeGem.x !== newX && key.x !== newX){
+                this.x = newX;
+            }
+           
+            //debugging
+            //console.log(this + ' has ' + this.x + ' x');
+            let newY = battleFieldArrayY[Math.round(Math.random() * 2)];
+            if(greenGem.y !== newY && orangeGem.y !== newY && key.y !== newY){
+                this.y = newY;
+            }
+           
+            //debugging
+            //console.log(this + ' has ' + this.y + ' y');
         }
     }
+    update(dt){
+
+    }
+    render(){
+        ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    }
 }
 
-class GreenGem{
+class GreenGem extends Gem{
     constructor (x, y){
-        this.x = x;
-        this.y = y;
+        super(x, y);
         this.sprite = 'images/Gem_Green.png';
     }
-    update(dt){
-
-    }
-    render(){
-        ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-    }
 }
 
-class OrangeGem{
+class OrangeGem extends Gem{
     constructor (x, y){
-        this.x = x;
-        this.y = y;
+        super(x, y);
         this.sprite = 'images/Gem_Orange.png';
     }
-    update(dt){
-
-    }
-    render(){
-        ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-    }
 }
 
-class Key{
+class Key extends Gem{
     constructor (x, y){
-        this.x = x;
-        this.y = y;
+        super(x, y);
         this.sprite = 'images/Key.png';
-    }
-    update(dt){
-
-    }
-    render(){
-        ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
     }
 }
 
@@ -128,45 +214,10 @@ document.addEventListener('keyup', function(e) {
     player.handleInput(allowedKeys[e.keyCode]);
 });
 
+
 // handy functions 
-// player goes to start position
-function resetPlayer(){
-    player.y = 403;
-    player.x = 203;
-}
-
-// player can't go outside the field
-function playerStaysInField(){
-    if(player.x < 1){
-        player.x = 1;
-    }else if(player.x > 405){
-        player.x = 405;
-    }else if(player.y < -12){
-        player.y = -12;
-    }else if(player.y > 403){
-        player.y = 403;
-    }
-}
-
-function playerWon(){
-    return (player.y < 0);
-}
-
-//if one reaches the water
-function playerAfterWin(){
-    if(playerWon()){
-        getScorePoints();
-        resetPlayer();
-        placeGems();
-    }
-}
-//score counting 
-let score = 3;
-
 function getScorePoints(){
     //a winner gets a win sound
-    const winBleep = new Audio();
-    winBleep.src = 'js/audio/Winning-sound-effect.mp3';
     winBleep.play();
 
     //a winner gets one more life
@@ -179,8 +230,6 @@ function getScorePoints(){
 function loseScorePoints(){
 
     //a sound if one has a collision
-    const failureSound = new Audio();
-    failureSound.src = 'js/audio/fail-buzzer-02.mp3';
     failureSound.play();
 
     //a loser loses one life
@@ -195,8 +244,6 @@ function loseScorePoints(){
     //if there is no more life the game is over
     if (score <= 0){
         popup.style.display = 'block';
-        const gameOverSound = new Audio();
-        gameOverSound.src = 'js/audio/Sad_Trombone-Joe_Lamb-665429450.mp3';
         gameOverSound.play();
     }
     
@@ -207,7 +254,7 @@ function loseScorePoints(){
         selectPlayer();
         
         //player is on start position
-        resetPlayer();
+        player.resetPlayer();
 
         //he has 3 lives
         score = 3;
@@ -229,12 +276,12 @@ function loseScorePoints(){
     });
 }
 
-//let the user select a player only at the beginning, not after "play again"
+//let user select a player
 function selectPlayer(){
     let avatars = document.querySelectorAll('.avatar');
     avatars.forEach(function(avatar){
         avatar.addEventListener('click', function(){ 
-           let avatarName = 'images/' + avatar.classList[1];
+            let avatarName = 'images/' + avatar.classList[1];
             player.sprite = avatarName;
             const selectPlayerPopup = document.querySelector('.select-player');
             selectPlayerPopup.style.display = 'none';
@@ -242,80 +289,20 @@ function selectPlayer(){
     });
 }
 
-// Shuffle function from http://stackoverflow.com/a/2450976
-function shuffle(originalArray) {
-    let array = [...originalArray];
-    var currentIndex = array.length, temporaryValue, randomIndex;
-
-    while (currentIndex !== 0) {
-        randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex -= 1;
-        temporaryValue = array[currentIndex];
-        array[currentIndex] = array[randomIndex];
-        array[randomIndex] = temporaryValue;
-    }
-    return array;
-}
-
 //places gems in the different positions on the battle field
 function placeGems(){
-    const battleFieldArrayX = [1, 102, 203, 304, 405];
-    const battleFieldArrayY = [71, 154, 237]; 
-
-    let shuffledArrayX = shuffle(battleFieldArrayX);
-    let shuffledArrayY = shuffle(battleFieldArrayY);
-    greenGem.x = shuffledArrayX[0];
-    greenGem.y = shuffledArrayY[1];
-
-    orangeGem.x = shuffledArrayX[2];
-    orangeGem.y = shuffledArrayY[0];
-
-    key.x = shuffledArrayX[4];
-    key.y = shuffledArrayY[2];
+    greenGem.placeOnField();
+    orangeGem.placeOnField();
+    key.placeOnField();
 }
 
-
-//for collecting gems
-let greenGemCounter = 0;
-const greenGemScore = document.querySelector('.greenGem');
-let orangeGemCounter = 0;
-const orangeGemScore = document.querySelector('.orangeGem');
-let keyCounter = 0;
-const keyScore = document.querySelector('.key');
-
-//what heppens when a player gets a gem
-function collectGems(){
-    const gotGem = new Audio();
-    gotGem.src = "js/audio/888.mp3";
-    if(player.x === greenGem.x && player.y === greenGem.y){
-        greenGemCounter += 1;
-        greenGemScore.innerHTML = greenGemCounter;
-        gotGem.play();
-        greenGem.x = 203;
-        greenGem.y = -999;
-    }else if(player.x === orangeGem.x && player.y === orangeGem.y){
-        orangeGemCounter += 1;
-        orangeGemScore.innerHTML = orangeGemCounter;
-        gotGem.play();
-        orangeGem.x = 203;
-        orangeGem.y = -999;
-    }else if(player.x === key.x && player.y === key.y){
-        keyCounter += 1;
-        keyScore.innerHTML = keyCounter;
-        gotGem.play();
-        key.x = 203;
-        key.y = -999;
-    }
-}
-
-//initiating player and enemies
-const player = new Player(203, 403);
+////!!!!!Ask Matt about gems: why should i declare new gems if they will be placed anyway?
+////!!!!!Aks Matt: what about global variables. I cannot find a way to avoid them
+//player, enemies, gems
+const player = new Player();
 const allEnemies = [new Enemy(0, 237, 2), new Enemy(0, 154, 4), new Enemy(0, 71, 8)];
 const greenGem = new GreenGem(102, 154);
 const orangeGem = new OrangeGem(304, 71);
 const key = new Key(1, 71);
 selectPlayer();
 placeGems();
-
-/** xx 1, 102, 203, 304, 405 */
-/** yy 320 green, 237, 154, 71 */
