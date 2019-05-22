@@ -4,7 +4,7 @@
 const battleFieldArrayX = [1, 102, 203, 304, 405];
 const battleFieldArrayY = [71, 154, 237]; 
 
-//score counting ans sounds !!!ASK MATT about global variables
+//score counting ans sounds
 let score = 3;
 const winBleep = new Audio();
 winBleep.src = 'js/audio/Winning-sound-effect.mp3';
@@ -153,24 +153,12 @@ class Gem{
             }
         }
        
-        //place gems on field in a free from gems random cell
+        //place gems on field 
         this.placeOnField = function(){
-            let newX = battleFieldArrayX[Math.round(Math.random() * 4)];
-            if (greenGem.x !== newX && orangeGem.x !== newX && key.x !== newX){
-                this.x = newX;
+            this.x = battleFieldArrayX[Math.round(Math.random() * 4)];
+            this.y = battleFieldArrayY[Math.round(Math.random() * 2)];  
             }
-           
-            //debugging
-            //console.log(this + ' has ' + this.x + ' x');
-            let newY = battleFieldArrayY[Math.round(Math.random() * 2)];
-            if(greenGem.y !== newY && orangeGem.y !== newY && key.y !== newY){
-                this.y = newY;
-            }
-           
-            //debugging
-            //console.log(this + ' has ' + this.y + ' y');
         }
-    }
     update(dt){
 
     }
@@ -296,8 +284,6 @@ function placeGems(){
     key.placeOnField();
 }
 
-////!!!!!Ask Matt about gems: why should i declare new gems if they will be placed anyway?
-////!!!!!Aks Matt: what about global variables. I cannot find a way to avoid them
 //player, enemies, gems
 const player = new Player();
 const allEnemies = [new Enemy(0, 237, 2), new Enemy(0, 154, 4), new Enemy(0, 71, 8)];
