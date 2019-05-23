@@ -284,6 +284,10 @@ function placeGems(){
     key.placeOnField();
 }
 
+function toCheckGitHub(){
+    
+}
+
 //player, enemies, gems
 const player = new Player();
 const allEnemies = [new Enemy(0, 237, 2), new Enemy(0, 154, 4), new Enemy(0, 71, 8)];
