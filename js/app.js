@@ -284,9 +284,6 @@ function placeGems(){
     key.placeOnField();
 }
 
-function toCheckGitHub(){
-    
-}
 
 //player, enemies, gems
 const player = new Player();
